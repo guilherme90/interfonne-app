@@ -164,8 +164,8 @@ class AddContact extends Component {
             <Text style={styles.label}>Nome Completo</Text>
             <TextInput
               autoCorrect={false}
-              autoCapitalize="words"
               keyboardType="default"
+              autoCapitalize="words"
               dataDetectorTypes="all"
               returnKeyType="next"
               onChangeText={(value) => this.setState({ name: value })}

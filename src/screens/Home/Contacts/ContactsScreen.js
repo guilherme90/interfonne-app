@@ -103,7 +103,7 @@ export default class ContactsScreen extends Component {
     const params = this.props.navigation.state.params;
     const props = this.props.screenProps;
     
-    if (props.user) {
+    if (props && props.user) {
       me.props.navigation.navigate('AddContact', {
         user_id: props.user.user_id,
         contact_id: item.contact_id,

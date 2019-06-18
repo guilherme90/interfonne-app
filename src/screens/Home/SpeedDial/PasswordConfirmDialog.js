@@ -8,7 +8,8 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
+  BackHandler
 } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -42,6 +43,10 @@ export default class PasswordConfirmDialog extends Component {
       this.props.navigation.navigate('Home');
     });
   };
+  
+  componentDidMount(): void {
+    BackHandler.addEventListener('hardwareBackPress', () => true);
+  }
   
   render() {
     return (
