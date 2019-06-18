@@ -18,6 +18,7 @@ import {
   Avatar,
   Card
 } from 'react-native-elements';
+import randomColor from 'randomcolor';
 
 import ScreenStandard from '../../ScreenStandard';
 
@@ -102,6 +103,7 @@ export default class ContactsListScreen extends Component {
                         rounded
                         title={item.givenName.split('')[0]}
                         activeOpacity={0.7}
+                        overlayContainerStyle={{backgroundColor: randomColor({ luminosity: 'bright'})}}
                       />
                     }
                     containerStyle={{ borderBottomWidth: 1, borderBottomColor: '#F1F1F1' }}

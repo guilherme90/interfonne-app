@@ -19,9 +19,11 @@ export default class PasswordConfirmDialog extends Component {
   }
   
   _onPressPasswordConfirm = () => {
-    const { user } = this.props.screenProps;
+    console.log(this.props);
     
-    if (user.password !== this.state.passwordConfirmation) {
+    const props = this.props.screenProps;
+    
+    if (props.user && props.user.password !== this.state.passwordConfirmation) {
       Alert.alert('Ops', 'Senha de confirmação inválida.',
         [{
           text: 'OK'

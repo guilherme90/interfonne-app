@@ -19,7 +19,7 @@ import { ListItem, Avatar, Button, Card } from 'react-native-elements';
 import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 import getUser from "../../../util/user";
-import randomColor from 'randomcolor'
+import randomColor from 'randomcolor';
 
 export default class ContactsScreen extends Component {
   constructor(props) {
