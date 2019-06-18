@@ -16,7 +16,7 @@ export default class Connection {
    * @returns {Promise<any> | Promise}
    */
   beginTransaction = (callback) => {
-    return new Promise((reject, resolve) => {
+    return new Promise((resolve, reject) => {
       db.transaction(
         query => callback(query),
         error => reject(error),

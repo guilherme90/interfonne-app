@@ -53,12 +53,13 @@ export default class RegisterScreen extends Component {
    */
   _onPress = e => {
     const me = this;
+    const data = {
+      name: me.state.name.trim(),
+      email: me.state.email.trim(),
+      password: me.state.password.trim()
+    };
   
-    const resultValidation = validation({
-      name: me.state.name,
-      email: me.state.email,
-      password: me.state.password
-    }, constraints);
+    const resultValidation = validation(data, constraints);
   
     if (resultValidation) {
       me.setState({
@@ -69,34 +70,33 @@ export default class RegisterScreen extends Component {
     }
   
     me.setState({
-      loading: true
+      loading: true,
+      formValidation: {
+        name: [],
+        email: [],
+        password: []
+      }
     });
     
     const registerService = new RegisterService();
-    registerService.register(
-      me.state.name.trim(),
-      me.state.email.trim(),
-      me.state.password.trim()
-    )
-      .then(payload => {
-        me.setState({
-          loading: false
-        });
-  
-        this.props.navigation.navigate('Login');
-      })
-      .catch(error => {
-        me.setState({
-          loading: false
-        });
-        
-        Alert.alert('Ops', 'Este e-mail já está cadastrado',
-          [{
-            text: 'Fechar'
-          }], {
-            cancelable: false
-          });
+    registerService.register(data.name, data.email, data.password).then(payload => {
+      me.setState({
+        loading: false
       });
+      
+      me.props.navigation.navigate('Login');
+    }).catch(error => {
+      me.setState({
+        loading: false
+      });
+      
+      Alert.alert('Ops', 'Este e-mail já está cadastrado',
+        [{
+          text: 'Fechar'
+        }], {
+          cancelable: false
+        });
+    });
   };
   
   render(): Component {

@@ -64,11 +64,13 @@ export default class LoginScreen extends Component {
    */
   _onPress = (e): void => {
     const me = this;
-
-    const resultValidation = validation({
+    
+    const data = {
       email: me.state.email.trim(),
-      password: me.state.password.trim(),
-    }, constraints);
+      password: me.state.password.trim()
+    };
+
+    const resultValidation = validation(data, constraints);
     
     if (resultValidation) {
       me.setState({
@@ -83,10 +85,12 @@ export default class LoginScreen extends Component {
     });
     
     const authentication = new AuthenticationService();
-    authentication.authenticate(me.state.email.trim(), me.state.password.trim())
+    authentication.authenticate(data.email, data.password)
       .then(payload => {
         me.setState({
-          loading: false
+          loading: false,
+          email: '',
+          password: ''
         });
   
         me._storeData(payload.user);
@@ -94,19 +98,18 @@ export default class LoginScreen extends Component {
         this.props.navigation.navigate('ContactsScreen', {
           user: payload.user
         });
-      })
-      .catch(error => {
+      }).catch(error => {
         me.setState({
           loading: false
         });
   
-        Alert.alert('Ops', error.message || 'Este e-mail já está cadastrado',
+        Alert.alert('Ops', error.message,
           [{
             text: 'OK'
           }], {
             cancelable: false
           });
-      })
+      });
   };
 
   render(): Component {
@@ -127,7 +130,6 @@ export default class LoginScreen extends Component {
         <View>
           <Text style={styles.label}>Seu e-mail</Text>
           <TextInput
-            autoFocus={true}
             autoCorrect={false}
             placeholder="Seu e-mail"
             keyboardType="email-address"

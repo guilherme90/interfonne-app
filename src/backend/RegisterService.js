@@ -21,7 +21,12 @@ export default class RegisterService extends Connection {
           password
         ];
         
-        query.executeSql('INSERT INTO users (name, email, password) VALUES(?,?,?)', data);
+        query.executeSql('INSERT INTO users (name, email, password) VALUES(?,?,?)', data, (tx, results) => {
+          return resolve({
+            success: true,
+            message: 'Usuário cadastrado com sucesso.'
+          });
+        });
       })
       .then(payload => resolve(payload))
       .catch(error => reject(error));
