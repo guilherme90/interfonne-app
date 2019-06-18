@@ -18,6 +18,7 @@ O aplicativo consiste em uma maneira bem fácil de discagem rápida para telefon
 - [Vector Icons](https://github.com/oblador/react-native-vector-icons#ios)
 - [Phone Contacts](https://github.com/rt2zz/react-native-contacts#ios)
 - [Async Storage](https://github.com/react-native-community/react-native-async-storage)
+- [Disable Portrait Orientation iOS](https://reactnativecode.com/disable-screen-rotation-landscape-mode/)
 
 ---
 

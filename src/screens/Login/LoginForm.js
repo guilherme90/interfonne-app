@@ -11,12 +11,14 @@ import {
   Dimensions,
   Alert
 } from 'react-native';
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-community/async-storage';
 import styles from './styles';
 import validation from '../../util/validation'
 import constraints from './validation';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AuthenticationService from '../../backend/AuthenticationService';
+import {WHITE} from "../../util/colors";
 
 export default class LoginScreen extends Component {
   constructor(props) {
@@ -48,7 +50,7 @@ export default class LoginScreen extends Component {
    * @returns {Promise<void>}
    * @private
    */
-  _storeData = async (user) => {
+  _storeData = async (user): void => {
     try {
       await AsyncStorage.setItem('user', JSON.stringify(user))
     } catch (e) {
@@ -60,7 +62,7 @@ export default class LoginScreen extends Component {
    * @param e
    * @private
    */
-  _onPress = e => {
+  _onPress = (e): void => {
     const me = this;
 
     const resultValidation = validation({
@@ -107,7 +109,7 @@ export default class LoginScreen extends Component {
       })
   };
 
-  render() {
+  render(): Component {
     styles.inputText = {
       ...styles.inputText,
       width: this.state.width - 20
@@ -124,11 +126,13 @@ export default class LoginScreen extends Component {
         
         <View>
           <Text style={styles.label}>Seu e-mail</Text>
-          <TextInput 
-            placeholder="Seu e-mail"
+          <TextInput
+            autoFocus={true}
             autoCorrect={false}
+            placeholder="Seu e-mail"
             keyboardType="email-address"
             autoCapitalize="none"
+            returnKeyType="next"
             style={styles.inputText}
             defaultValue={this.state.email}
             onChangeText={(value) => this.setState({ email: value })} />
@@ -144,6 +148,7 @@ export default class LoginScreen extends Component {
             placeholder="******" 
             textContentType="none"
             autoCapitalize="none"
+            returnKeyType="done"
             style={styles.inputText}
             defaultValue={this.state.password}
             secureTextEntry={true}
@@ -156,7 +161,12 @@ export default class LoginScreen extends Component {
         </View>
         
         <TouchableOpacity style={styles.button} onPress={this._onPress}>
-          <Text style={styles.buttonText}>ENTRAR</Text>
+          <Text style={styles.buttonText}>
+            <MaterialIcon
+              name="check-outline"
+              size={20}
+              color={WHITE} /> ENTRAR
+          </Text>
         </TouchableOpacity>
 
         <Text style={{color: '#F3F3F3', fontSize: 18, marginTop: 20}}>Não possui uma conta?</Text>

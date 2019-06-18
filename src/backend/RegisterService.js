@@ -5,14 +5,15 @@
 import Connection from './Connection';
 
 export default class RegisterService extends Connection {
+  
   /**
    * @param {String} name
-   * @param {String] email
+   * @param {String} email
    * @param {String} password
    * @returns {Promise<any> | Promise}
    */
-  register = (name, email, password) => {
-    return new Promise((reject, resolve) => {
+  register = (name, email, password): Promise => {
+    return new Promise((resolve, reject) => {
       this.beginTransaction(query => {
         const data = [
           name,
@@ -20,9 +21,7 @@ export default class RegisterService extends Connection {
           password
         ];
         
-        query.executeSql('INSERT INTO users (name, email, password) VALUES(?,?,?)', data, (tx, results) => {
-        
-        });
+        query.executeSql('INSERT INTO users (name, email, password) VALUES(?,?,?)', data);
       })
       .then(payload => resolve(payload))
       .catch(error => reject(error));

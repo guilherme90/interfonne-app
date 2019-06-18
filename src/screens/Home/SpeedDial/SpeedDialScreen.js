@@ -24,7 +24,7 @@ export default class SpeedDialScreen extends Component {
    * @param {String} phone
    * @private
    */
-  _callNumber = (phone) => {
+  _callNumber = (phone): void => {
     PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CALL_PHONE).then(() => {
       RNImmediatePhoneCall.immediatePhoneCall(phone)
     });
@@ -33,7 +33,7 @@ export default class SpeedDialScreen extends Component {
   /**
    * @private
    */
-  _onPressMakeCall = () => {
+  _onPressMakeCall = (): void => {
     const me = this;
     
     const contactService = new ContactsService();
@@ -51,7 +51,7 @@ export default class SpeedDialScreen extends Component {
       })
   };
   
-  render() {
+  render(): Component {
     const { phoneNumber } = this.state;
     
     return (

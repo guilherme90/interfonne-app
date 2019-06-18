@@ -18,7 +18,7 @@ class LoginScreen extends Component {
     super(props);
   }
   
-  render() {
+  render(): Component {
     return (
       <KeyboardAwareScrollView style={styles.scrollViewContainer}>
         <StatusBar backgroundColor={DARK_LIGHT} barStyle="default" />

@@ -11,7 +11,7 @@ export default class AuthenticationService extends Connection {
    * @param {String} password
    * @returns {Promise<any> | Promise}
    */
-  authenticate = (email, password) => {
+  authenticate = (email, password): Promise => {
     return new Promise((resolve, reject) => {
       this.beginTransaction(query => {
           query.executeSql('SELECT * FROM users WHERE email = ?', [email], (tx, results) => {

@@ -5,10 +5,18 @@
 import React, {Component} from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 import styles from './styles';
-import {Alert, Dimensions, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {
+  Alert,
+  Dimensions,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View} from 'react-native';
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import validation from '../../../util/validation';
 import constraints from './validation';
 import SettingService from '../../../backend/SettingService';
+import {WHITE} from "../../../util/colors";
 
 export default class ChangeAccountScreen extends Component {
   constructor(props) {
@@ -121,8 +129,10 @@ export default class ChangeAccountScreen extends Component {
           <Text style={styles.label}>Nome Empresarial</Text>
           <TextInput
             autoCorrect={false}
+            autoFocus={true}
             keyboardType="default"
             dataDetectorTypes="all"
+            returnKeyType="next"
             defaultValue={this.state.name}
             style={styles.inputText}
             onChangeText={(value) => this.setState({ name: value })} />
@@ -139,6 +149,7 @@ export default class ChangeAccountScreen extends Component {
             keyboardType="email-address"
             dataDetectorTypes="all"
             autoCapitalize="none"
+            returnKeyType="next"
             defaultValue={this.state.email}
             style={styles.inputText}
             onChangeText={(value) => this.setState({ email: value })} />
@@ -154,6 +165,7 @@ export default class ChangeAccountScreen extends Component {
             autoCorrect={false}
             dataDetectorTypes="all"
             autoCapitalize="none"
+            returnKeyType="done"
             defaultValue={this.state.password}
             secureTextEntry={true}
             style={styles.inputText}
@@ -165,7 +177,12 @@ export default class ChangeAccountScreen extends Component {
         </View>
         
         <TouchableOpacity style={styles.button} onPress={this._onPress}>
-          <Text style={styles.buttonText}>ATUALIZAR</Text>
+          <Text style={styles.buttonText}>
+            <MaterialIcon
+              name="content-save"
+              size={20}
+              color={WHITE} /> ATUALIZAR
+          </Text>
         </TouchableOpacity>
       </View>
     )

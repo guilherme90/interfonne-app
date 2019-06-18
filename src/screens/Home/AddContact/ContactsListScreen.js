@@ -36,7 +36,7 @@ export default class ContactsListScreen extends Component {
    * @param {Object} item
    * @private
    */
-  _onPressContactSelect = (item) => {
+  _onPressContactSelect = (item): void => {
     this.props.navigation.navigate('AddContact', {
       givenName: item.givenName,
       familyName: item.familyName || '',
@@ -44,7 +44,7 @@ export default class ContactsListScreen extends Component {
     });
   };
   
-  componentDidMount() {
+  componentDidMount(): void {
     PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS).then(() => {
       this.setState({
         loading: true
@@ -74,7 +74,7 @@ export default class ContactsListScreen extends Component {
     })
   }
   
-  render() {
+  render(): Component {
     return (
       <KeyboardAwareScrollView>
         <ScreenStandard>

@@ -10,7 +10,7 @@ export default class SettingService extends Connection {
    * @param {Array} data
    * @returns {Promise<any> | Promise}
    */
-  changeAccount = (data) => {
+  changeAccount = (data): Promise => {
     return new Promise((resolve, reject) => {
       this.beginTransaction(query => {
           const sql = `

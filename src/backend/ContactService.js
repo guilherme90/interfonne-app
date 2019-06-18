@@ -11,7 +11,7 @@ export default class ContactService extends Connection {
    * @param {Array} data
    * @returns {Promise<any> | Promise}
    */
-  saveContact = (contactId, data) => {
+  saveContact = (contactId, data): Promise => {
     return new Promise((resolve, reject) => {
       this.beginTransaction(query => {
         let sql = `
@@ -49,7 +49,7 @@ export default class ContactService extends Connection {
    * @param {Number} contactId
    * @returns {Promise<any> | Promise}
    */
-  getContactById = (contactId) => {
+  getContactById = (contactId): Promise => {
     return new Promise((resolve, reject) => {
       this.beginTransaction(query => {
           const sql = `SELECT phone FROM contacts WHERE contact_id = ?`;
@@ -82,7 +82,7 @@ export default class ContactService extends Connection {
    * @param {Number} identifier
    * @returns {Promise<any> | Promise}
    */
-  getPhoneByIdentifier = (identifier) => {
+  getPhoneByIdentifier = (identifier): Promise => {
     return new Promise((resolve, reject) => {
       this.beginTransaction(query => {
           const sql = `SELECT phone FROM contacts WHERE identifier = ?`;
@@ -115,7 +115,7 @@ export default class ContactService extends Connection {
    * @param {Number} userId
    * @returns {Promise<any> | Promise}
    */
-  getContacts = (userId) => {
+  getContacts = (userId): Promise => {
     return new Promise((resolve, reject) => {
       this.beginTransaction(query => {
           const sql = `SELECT * FROM contacts WHERE user_id = ? ORDER BY name ASC`;
@@ -145,7 +145,7 @@ export default class ContactService extends Connection {
    * @param {Number} contactId
    * @returns {Promise<any> | Promise}
    */
-  removeContact = (contactId) => {
+  removeContact = (contactId): Promise => {
     return new Promise((resolve, reject) => {
       this.beginTransaction(query => {
           const sql = `DELETE FROM contacts WHERE contact_id = ?`;

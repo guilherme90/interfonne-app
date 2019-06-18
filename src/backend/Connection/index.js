@@ -10,6 +10,7 @@ const db = SQLite.openDatabase({
 });
 
 export default class Connection {
+  
   /**
    * @param {Function} callback
    * @returns {Promise<any> | Promise}
@@ -22,9 +23,5 @@ export default class Connection {
         () => resolve('Transação realizada com sucesso.')
       );
     });
-  }
-  
-  closeConnection() {
-    db.close();
-  }
+  };
 }

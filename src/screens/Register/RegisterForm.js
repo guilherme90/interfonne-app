@@ -5,10 +5,19 @@
 import React, {Component} from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 import styles from './styles';
-import {Alert, Dimensions, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {
+  Alert,
+  Dimensions,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
+} from 'react-native';
 import validation from '../../util/validation';
 import constraints from './validation';
 import RegisterService from '../../backend/RegisterService';
+import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import {WHITE} from "../../util/colors";
 
 export default class RegisterScreen extends Component {
   constructor(props) {
@@ -36,7 +45,7 @@ export default class RegisterScreen extends Component {
     this.setState({
       width: e.nativeEvent.layout.width
     });
-  }
+  };
   
   /**
    * @param e
@@ -90,7 +99,7 @@ export default class RegisterScreen extends Component {
       });
   };
   
-  render() {
+  render(): Component {
     styles.inputText = {
       ...styles.inputText,
       width: this.state.width - 20
@@ -109,9 +118,11 @@ export default class RegisterScreen extends Component {
           <Text style={styles.label}>Nome Empresarial</Text>
           <TextInput
             autoCorrect={false}
+            autoFocus={true}
             keyboardType="default"
             autoCapitalize="words"
             dataDetectorTypes="all"
+            returnKeyType="next"
             defaultValue={this.state.name}
             style={styles.inputText}
             onChangeText={(value) => this.setState({ name: value })} />
@@ -128,6 +139,7 @@ export default class RegisterScreen extends Component {
             keyboardType="email-address"
             dataDetectorTypes="all"
             autoCapitalize="none"
+            returnKeyType="next"
             defaultValue={this.state.email}
             style={styles.inputText}
             onChangeText={(value) => this.setState({ email: value })} />
@@ -143,6 +155,7 @@ export default class RegisterScreen extends Component {
             autoCorrect={false}
             dataDetectorTypes="all"
             autoCapitalize="none"
+            returnKeyType="done"
             defaultValue={this.state.password}
             secureTextEntry={true}
             style={styles.inputText}
@@ -154,7 +167,12 @@ export default class RegisterScreen extends Component {
         </View>
   
         <TouchableOpacity style={styles.button} onPress={this._onPress}>
-          <Text style={styles.buttonText}>CADASTRAR</Text>
+          <Text style={styles.buttonText}>
+            <MaterialIcon
+              name="content-save"
+              size={20}
+              color={WHITE} /> CADASTRAR
+          </Text>
         </TouchableOpacity>
       </View>
     )

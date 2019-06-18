@@ -13,14 +13,16 @@ import {
   View
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import styles from './styles';
+
+import Spinner from 'react-native-loading-spinner-overlay';
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import ContactService from '../../../backend/ContactService';
 import {BLUE_DARK, WHITE} from '../../../util/colors';
 import validation from '../../../util/validation';
 import constraints from './validation';
-import Spinner from 'react-native-loading-spinner-overlay';
-import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import ContactService from '../../../backend/ContactService';
 import getUser from '../../../util/user';
+import styles from './styles';
 
 class AddContact extends Component {
   constructor(props) {
@@ -48,7 +50,7 @@ class AddContact extends Component {
     });
   };
   
-  onPress = e => {
+  onPress = (e): void => {
     const me = this;
   
     const resultValidation = validation({
@@ -99,7 +101,7 @@ class AddContact extends Component {
       });
   };
   
-  componentDidMount() {
+  componentDidMount(): void {
     const contact = this.props.navigation.state.params;
     let phone = '';
     
@@ -122,7 +124,7 @@ class AddContact extends Component {
     });
   }
   
-  render() {
+  render(): Component {
     styles.inputText = {
       ...styles.inputText,
       width: this.state.width - 20
@@ -147,7 +149,7 @@ class AddContact extends Component {
             <TextInput
               autoCorrect={false}
               autoFocus={true}
-              
+              returnKeyType="next"
               keyboardType="numeric"
               onChangeText={(value) => this.setState({ digit: value })}
               defaultValue={this.state.digit}
@@ -165,7 +167,7 @@ class AddContact extends Component {
               autoCapitalize="words"
               keyboardType="default"
               dataDetectorTypes="all"
-              editable={contact.givenName === ''}
+              returnKeyType="next"
               onChangeText={(value) => this.setState({ name: value })}
               defaultValue={`${contact.givenName || ''} ${contact.familyName || ''}`}
               style={styles.inputText} />
@@ -195,6 +197,7 @@ class AddContact extends Component {
               <TextInput
                 autoCorrect={false}
                 keyboardType="numeric"
+                returnKeyType="done"
                 defaultValue={this.state.phone}
                 onChangeText={(value) => this.setState({ phone: value })}
                 style={styles.inputText} />

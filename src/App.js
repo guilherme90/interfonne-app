@@ -3,10 +3,10 @@
  */
 
 import React, {Component} from 'react';
-import {View, Text} from 'react-native';
 import LoginScreen from './screens/Login/LoginScreen';
 import HomeStack from './screens/Home/HomeStackNavigation';
 import getUser from './util/user';
+import Splash from './Splash';
 
 export default class App extends Component {
   constructor(props) {
@@ -31,15 +31,11 @@ export default class App extends Component {
     });
   }
   
-  render() {
+  render(): Component {
     const { user, loading } = this.state;
   
     if (loading) {
-      return (
-        <View>
-          <Text>Carregando...</Text>
-        </View>
-      )
+      return <Splash />
     }
     
     if (user !== null && Object.entries(user).length > 0) {
