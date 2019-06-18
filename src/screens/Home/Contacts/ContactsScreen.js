@@ -101,6 +101,19 @@ export default class ContactsScreen extends Component {
   _onPressContactSelect = (item): void => {
     const me = this;
     const params = this.props.navigation.state.params;
+    const props = this.props.screenProps;
+    
+    if (props.user) {
+      me.props.navigation.navigate('AddContact', {
+        user_id: props.user.user_id,
+        contact_id: item.contact_id,
+        givenName: item.name,
+        phone: item.phone,
+        digit: item.identifier.toString()
+      });
+      
+      return;
+    }
     
     me.props.navigation.navigate('AddContact', {
       user_id: params.user.user_id,

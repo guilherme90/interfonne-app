@@ -69,7 +69,7 @@ export default class SettingsScreen extends Component {
     const me = this;
   
     me.props.navigation.navigate('ChangeAccount', {
-      data: me.state.user
+      user: me.state.user
     });
   };
   
@@ -96,6 +96,18 @@ export default class SettingsScreen extends Component {
   
   componentDidMount(): void {
     this._getUser();
+  }
+  
+  componentDidUpdate(): void {
+    const params = this.props.navigation.state.params;
+    
+    if (params && params.user) {
+      this.setState({
+        user: params.user
+      });
+  
+      this.props.navigation.state.params = undefined;
+    }
   }
   
   render(): Component {
