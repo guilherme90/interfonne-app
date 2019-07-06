@@ -19,8 +19,6 @@ export default class PasswordConfirmDialog extends Component {
   }
   
   _onPressPasswordConfirm = () => {
-    console.log(this.props);
-    
     const props = this.props.screenProps;
     
     if (props.user && props.user.password !== this.state.passwordConfirmation) {
