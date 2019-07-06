@@ -30,7 +30,7 @@ export default class SettingsScreen extends Component {
     }
   }
   
-  _onPressLogoutConfirm = () => {
+  _onPressLogoutConfirm = (): void => {
     const me = this;
     
     Alert.alert(
@@ -65,16 +65,15 @@ export default class SettingsScreen extends Component {
   /**
    * @private
    */
-  _onPressChangeAccount = () => {
+  _onPressChangeAccount = (): void => {
     const me = this;
   
-    console.log(me.props.navigation)
     me.props.navigation.navigate('ChangeAccount', {
-      data: me.state.user
+      user: me.state.user
     });
   };
   
-  _getUser = () => {
+  _getUser = (): void => {
     const me = this;
     const props = me.props.screenProps;
     
@@ -99,7 +98,19 @@ export default class SettingsScreen extends Component {
     this._getUser();
   }
   
-  render() {
+  componentDidUpdate(): void {
+    const params = this.props.navigation.state.params;
+    
+    if (params && params.user) {
+      this.setState({
+        user: params.user
+      });
+  
+      this.props.navigation.state.params = undefined;
+    }
+  }
+  
+  render(): Component {
     const me = this;
     const { user } = me.state;
     

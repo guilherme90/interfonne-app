@@ -3,11 +3,16 @@
  */
 
 import React, {Component} from 'react';
-import { StatusBar, ScrollView, SafeAreaView , View } from 'react-native';
+import {
+  StatusBar,
+  ScrollView,
+  SafeAreaView ,
+  View
+} from 'react-native';
 import styles from '../util/styles';
 
 export default class ScreenStandard extends Component {
-  render() {
+  render(): Component {
     return (
       <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
         <ScrollView>

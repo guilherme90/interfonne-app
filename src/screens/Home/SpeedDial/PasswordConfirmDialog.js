@@ -3,11 +3,20 @@
  */
 
 import React, { Component } from 'react';
-import {Alert, Text, TextInput, TouchableOpacity, View} from 'react-native';
-import styles from "./styles";
+import {
+  Alert,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  BackHandler
+} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import ScreenStandard from '../../ScreenStandard';
-import {WHITE} from "../../../util/colors";
+import getUser from '../../../util/user';
+import {WHITE} from '../../../util/colors';
+import styles from './styles';
 
 export default class PasswordConfirmDialog extends Component {
   constructor(props) {
@@ -32,8 +41,25 @@ export default class PasswordConfirmDialog extends Component {
       return;
     }
     
-    this.props.navigation.navigate('Home');
+    getUser().then(payload => {
+      if (payload.password !== this.state.passwordConfirmation) {
+        Alert.alert('Ops', 'Senha de confirmação inválida.',
+          [{
+            text: 'OK'
+          }], {
+            cancelable: false
+          });
+    
+        return;
+      }
+  
+      this.props.navigation.navigate('Home');
+    });
   };
+  
+  componentDidMount(): void {
+    BackHandler.addEventListener('hardwareBackPress', () => true);
+  }
   
   render() {
     return (

@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 /**
  * @return {Object}
  */
-async function getUser () {
+async function getUser(): Object {
   try {
     const retrievedItem = await AsyncStorage.getItem('user');
     const user = JSON.parse(retrievedItem);

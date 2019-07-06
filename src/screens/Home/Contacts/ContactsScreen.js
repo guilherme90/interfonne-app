@@ -11,13 +11,19 @@ import {
   Alert,
   PermissionsAndroid
 } from 'react-native';
-import ContactsService from '../../../backend/ContactService';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Spinner from 'react-native-loading-spinner-overlay';
-import ScreenStandard from '../../ScreenStandard';
-import { ListItem, Avatar, Button, Card } from 'react-native-elements';
+import {
+  ListItem,
+  Avatar,
+  Button,
+  Card
+} from 'react-native-elements';
 import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
+
+import ScreenStandard from '../../ScreenStandard';
+import ContactsService from '../../../backend/ContactService';
 import getUser from "../../../util/user";
 import randomColor from 'randomcolor';
 
@@ -36,7 +42,7 @@ export default class ContactsScreen extends Component {
    * @param {String} phone
    * @private
    */
-  _callNumber = phone => {
+  _callNumber = (phone): void => {
     PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CALL_PHONE).then(() => {
       RNImmediatePhoneCall.immediatePhoneCall(phone)
     });
@@ -45,7 +51,7 @@ export default class ContactsScreen extends Component {
   /**
    * @private
    */
-  _getContacts = () => {
+  _getContacts = (): void => {
     const me = this;
     const screenProps = this.props.screenProps;
     
@@ -80,6 +86,10 @@ export default class ContactsScreen extends Component {
     }
     
     if (screenProps.user) {
+      me.setState({
+        loading: true
+      });
+      
       allContacts(screenProps.user.user_id);
     }
   };
@@ -88,11 +98,25 @@ export default class ContactsScreen extends Component {
    * @param {Object} item
    * @private
    */
-  _onPressContactSelect = (item) => {
+  _onPressContactSelect = (item): void => {
     const me = this;
+    const params = this.props.navigation.state.params;
+    const props = this.props.screenProps;
+    
+    if (props && props.user) {
+      me.props.navigation.navigate('AddContact', {
+        user_id: props.user.user_id,
+        contact_id: item.contact_id,
+        givenName: item.name,
+        phone: item.phone,
+        digit: item.identifier.toString()
+      });
+      
+      return;
+    }
     
     me.props.navigation.navigate('AddContact', {
-      user_id: me.props.screenProps.user.user_id,
+      user_id: params.user.user_id,
       contact_id: item.contact_id,
       givenName: item.name,
       phone: item.phone,
@@ -103,7 +127,7 @@ export default class ContactsScreen extends Component {
   /**
    * @private
    */
-  _onRefresh = () => {
+  _onRefresh = (): void => {
     this.setState({
       refreshing: true
     });
@@ -115,7 +139,7 @@ export default class ContactsScreen extends Component {
    * @param {Number} contactId
    * @private
    */
-  _onPressRemoveContact = (contactId) => {
+  _onPressRemoveContact = (contactId): void => {
     const me = this;
   
     Alert.alert(
@@ -157,7 +181,7 @@ export default class ContactsScreen extends Component {
    * @param {Number} contactId
    * @private
    */
-  _onPressMakeCall = (contactId) => {
+  _onPressMakeCall = (contactId): void => {
     const me = this;
     
     const contactService = new ContactsService();
@@ -173,11 +197,11 @@ export default class ContactsScreen extends Component {
       })
   };
   
-  componentDidMount() {
+  componentDidMount(): void {
     this._getContacts();
   }
   
-  componentDidUpdate() {
+  componentDidUpdate(): void {
     const {navigation} = this.props;
     const reset = navigation.getParam('reset', false);
     
@@ -189,7 +213,7 @@ export default class ContactsScreen extends Component {
     }
   }
   
-  render() {
+  render(): Component {
     return (
       <KeyboardAwareScrollView>
         <ScreenStandard>

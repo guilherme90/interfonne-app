@@ -9,14 +9,16 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
-  PermissionsAndroid
+  PermissionsAndroid,
+  BackHandler
 } from 'react-native';
-import ScreenStandard from '../../ScreenStandard';
+import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import styles from './styles';
 import {WHITE} from '../../../util/colors';
-import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 import ContactsService from '../../../backend/ContactService';
+import ScreenStandard from '../../ScreenStandard';
 
 export default class SpeedDialScreen extends Component {
   constructor(props) {
@@ -31,7 +33,7 @@ export default class SpeedDialScreen extends Component {
    * @param {String} phone
    * @private
    */
-  _callNumber = (phone) => {
+  _callNumber = (phone): void => {
     PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CALL_PHONE).then(() => {
       RNImmediatePhoneCall.immediatePhoneCall(phone)
     });
@@ -40,7 +42,7 @@ export default class SpeedDialScreen extends Component {
   /**
    * @private
    */
-  _onPressMakeCall = () => {
+  _onPressMakeCall = (): void => {
     const me = this;
     
     const contactService = new ContactsService();
@@ -58,7 +60,11 @@ export default class SpeedDialScreen extends Component {
       })
   };
   
-  render() {
+  componentDidMount(): void {
+    BackHandler.addEventListener('hardwareBackPress', () => true);
+  }
+  
+  render(): Component {
     const { phoneNumber } = this.state;
     
     return (

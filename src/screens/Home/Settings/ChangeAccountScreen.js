@@ -5,10 +5,20 @@
 import React, {Component} from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 import styles from './styles';
-import {Alert, Dimensions, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {
+  Alert,
+  Dimensions,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View} from 'react-native';
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import validation from '../../../util/validation';
 import constraints from './validation';
 import SettingService from '../../../backend/SettingService';
+import {WHITE} from "../../../util/colors";
+import getUser from '../../../util/user';
+import AsyncStorage from "@react-native-community/async-storage";
 
 export default class ChangeAccountScreen extends Component {
   constructor(props) {
@@ -43,7 +53,7 @@ export default class ChangeAccountScreen extends Component {
    * @param e
    * @private
    */
-  _onPress = e => {
+  _onPress = (e): void => {
     const me = this;
     
     const resultValidation = validation({
@@ -70,35 +80,46 @@ export default class ChangeAccountScreen extends Component {
       me.state.email.trim(),
       me.state.password.trim(),
       me.state.user_id
-      )
-      .then(payload => {
-        me.setState({
-          loading: false
-        });
-        
-        me.props.navigation.navigate('SettingScreen');
-      })
-      .catch(error => {
-        me.setState({
-          loading: false
-        });
-        
-        Alert.alert('Ops', 'Este e-mail já está cadastrado',
-          [{
-            text: 'Fechar'
-          }], {
-            cancelable: false
-          });
+    ).then(payload => {
+      me.setState({
+        loading: false
       });
+    
+      AsyncStorage.mergeItem('user', JSON.stringify({
+        user_id: me.state.user_id,
+        name: me.state.name.trim(),
+        email: me.state.email.trim(),
+        password: me.state.password.trim()
+      }));
+      
+      getUser().then(payload => {
+        me.props.navigation.navigate('SettingsScreen', {
+          user: payload
+        });
+      });
+    })
+    .catch(error => {
+      me.setState({
+        loading: false
+      });
+      
+      Alert.alert('Ops', 'Este e-mail já está cadastrado',
+        [{
+          text: 'Fechar'
+        }], {
+          cancelable: false
+        });
+    });
   };
   
   componentDidMount() {
-    const data = this.props.navigation.getParam('data');
+    const user = this.props.navigation.getParam('user');
     
     this.setState({
-      name: data.name,
-      email: data.email,
-      password: data.password
+      user_id: user.user_id,
+      name: user.name,
+      email: user.email,
+      password: user.password
     })
   }
   
@@ -121,8 +142,11 @@ export default class ChangeAccountScreen extends Component {
           <Text style={styles.label}>Nome Empresarial</Text>
           <TextInput
             autoCorrect={false}
+            autoFocus={true}
             keyboardType="default"
+            autoCapitalize="words"
             dataDetectorTypes="all"
+            returnKeyType="next"
             defaultValue={this.state.name}
             style={styles.inputText}
             onChangeText={(value) => this.setState({ name: value })} />
@@ -139,6 +163,7 @@ export default class ChangeAccountScreen extends Component {
             keyboardType="email-address"
             dataDetectorTypes="all"
             autoCapitalize="none"
+            returnKeyType="next"
             defaultValue={this.state.email}
             style={styles.inputText}
             onChangeText={(value) => this.setState({ email: value })} />
@@ -154,6 +179,7 @@ export default class ChangeAccountScreen extends Component {
             autoCorrect={false}
             dataDetectorTypes="all"
             autoCapitalize="none"
+            returnKeyType="done"
             defaultValue={this.state.password}
             secureTextEntry={true}
             style={styles.inputText}
@@ -165,7 +191,12 @@ export default class ChangeAccountScreen extends Component {
         </View>
         
         <TouchableOpacity style={styles.button} onPress={this._onPress}>
-          <Text style={styles.buttonText}>ATUALIZAR</Text>
+          <Text style={styles.buttonText}>
+            <MaterialIcon
+              name="content-save"
+              size={20}
+              color={WHITE} /> ATUALIZAR
+          </Text>
         </TouchableOpacity>
       </View>
     )

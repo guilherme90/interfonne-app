@@ -10,7 +10,7 @@ import {BLUE_DARK} from '../../util/colors';
 import RegisterForm from './RegisterForm';
 
 class RegisterScreen extends Component {
-  render() {
+  render(): Component {
     return (
       <KeyboardAwareScrollView style={styles.scrollViewContainer}>
         <StatusBar backgroundColor={BLUE_DARK} barStyle="default" />
