@@ -3,7 +3,14 @@
  */
 
 import React, {Component} from 'react';
-import {Text, View, TouchableOpacity, TextInput, Alert, PermissionsAndroid} from 'react-native';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+  Alert,
+  PermissionsAndroid
+} from 'react-native';
 import ScreenStandard from '../../ScreenStandard';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './styles';
