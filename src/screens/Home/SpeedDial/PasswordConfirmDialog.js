@@ -76,6 +76,7 @@ export default class PasswordConfirmDialog extends Component {
             secureTextEntry={true}
             style={styles.inputText}
             defaultValue={this.state.passwordConfirmation}
+            onSubmitEditing={this._onPressPasswordConfirm}
             onChangeText={(value) => this.setState({ passwordConfirmation: value })} />
         </View>
   

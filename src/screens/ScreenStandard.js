@@ -12,10 +12,14 @@ import {
 import styles from '../util/styles';
 
 export default class ScreenStandard extends Component {
+  constructor(props) {
+    super(props)
+  }
+  
   render(): Component {
     return (
       <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
-        <ScrollView>
+        <ScrollView keyboardShouldPersistTaps={this.props.keyboardShouldPersistTaps || 'never'}>
           <StatusBar backgroundColor={'#1C313A'} barStyle="default"/>
 
           <View style={styles.container}>

@@ -18,7 +18,7 @@ import {
   Avatar,
   Card
 } from 'react-native-elements';
-import randomColor from 'randomcolor';
+import _ from 'lodash';
 
 import ScreenStandard from '../../ScreenStandard';
 
@@ -44,6 +44,47 @@ export default class ContactsListScreen extends Component {
     });
   };
   
+  _randomColor = (str) => {
+    let hash = 0;
+    let colour = '#';
+    
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    
+    for (let i = 0; i < 3; i++) {
+      const value = (hash >> (i * 8)) & 0xFF;
+      colour += ('00' + value.toString(16)).substr(-2);
+    }
+    
+    return colour;
+  };
+  
+  _remountContactsList = (data) => {
+    data.map((current, index, item) => {
+      if (item[index + 1]) {
+        if (current.givenName === item[index + 1].givenName) {
+          current.phoneNumbers = [
+            ...current.phoneNumbers,
+            ...item[index + 1].phoneNumbers
+          ].map(phone => {
+            return {
+              id: phone.id,
+              label: phone.label,
+              number: phone.number.replace(/[\-\s]/g, '')
+            }
+          });
+          
+          data.splice(index + 1, 1);
+        }
+      }
+  
+      current.phoneNumbers = _.uniqBy(current.phoneNumbers, 'number');
+    });
+    
+    return data;
+  };
+  
   componentDidMount(): void {
     PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS).then(() => {
       this.setState({
@@ -52,9 +93,11 @@ export default class ContactsListScreen extends Component {
       
       Contacts.getAll((err, contacts) => {
         if (err !== 'denied') {
+          const data = _.sortBy(contacts, ['givenName', 'familyName']);
+          
           this.setState({
             loading: false,
-            contacts: contacts
+            contacts: this._remountContactsList(data)
           });
         }
         
@@ -73,6 +116,11 @@ export default class ContactsListScreen extends Component {
       })
     })
   }
+  
+  _getPhoneNumbers = (phones) => {
+    const numbers = _.map(phones, 'number');
+    return numbers.join(', ');
+  };
   
   render(): Component {
     return (
@@ -103,9 +151,10 @@ export default class ContactsListScreen extends Component {
                         rounded
                         title={item.givenName.split('')[0]}
                         activeOpacity={0.7}
-                        overlayContainerStyle={{backgroundColor: randomColor({ luminosity: 'bright'})}}
+                        overlayContainerStyle={{backgroundColor: this._randomColor(item.givenName)}}
                       />
                     }
+                    subtitle={item.phoneNumbers.length > 0 && this._getPhoneNumbers(item.phoneNumbers)}
                     containerStyle={{ borderBottomWidth: 1, borderBottomColor: '#F1F1F1' }}
                   />
                 </TouchableOpacity>

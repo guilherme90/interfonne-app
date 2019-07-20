@@ -10,7 +10,8 @@ import {
   TextInput,
   Alert,
   PermissionsAndroid,
-  BackHandler
+  BackHandler,
+  Keyboard
 } from 'react-native';
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -25,8 +26,8 @@ export default class SpeedDialScreen extends Component {
     super(props);
     
     this.state = {
-      identifier: '',
-    }
+      identifier: ''
+    };
   }
   
   /**
@@ -35,7 +36,7 @@ export default class SpeedDialScreen extends Component {
    */
   _callNumber = (phone): void => {
     PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CALL_PHONE).then(() => {
-      RNImmediatePhoneCall.immediatePhoneCall(phone)
+      RNImmediatePhoneCall.immediatePhoneCall(phone);
     });
   };
   
@@ -48,6 +49,10 @@ export default class SpeedDialScreen extends Component {
     const contactService = new ContactsService();
     contactService.getPhoneByIdentifier(me.state.identifier)
       .then(payload => {
+        me.setState({
+          identifier: ''
+        });
+        
         me._callNumber(payload.contact.phone);
       })
       .catch(error => {
@@ -65,22 +70,21 @@ export default class SpeedDialScreen extends Component {
   }
   
   render(): Component {
-    const { phoneNumber } = this.state;
-    
     return (
-      <ScreenStandard>
+      <ScreenStandard keyboardShouldPersistTaps={'always'}>
           <Text style={styles.title}>Digite o RAMAL</Text>
   
           <View>
             <TextInput
               autoCorrect={false}
-              autoFocus={true}
               placeholder="99"
+              autoFocus={true}
               scrollEnabled={false}
               keyboardType="phone-pad"
               autoCapitalize="none"
               style={styles.inputText}
-              defaultValue={phoneNumber}
+              defaultValue={this.state.identifier}
+              onSubmitEditing={this._onPressMakeCall}
               onChangeText={(value) => this.setState({ identifier: value })} />
           </View>
   
